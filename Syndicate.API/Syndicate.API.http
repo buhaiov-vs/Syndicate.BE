@@ -1,0 +1,6 @@
+@Syndicate.API_HostAddress = http://localhost:5288
+
+GET {{Syndicate.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

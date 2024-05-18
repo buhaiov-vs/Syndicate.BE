@@ -11,7 +11,7 @@ public class GetCategoriesQuery(IDbContextFactory<AppDbContext> _dbContextFactor
         var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);
         var categories = await dbContext.Categories.ToListAsync(cancellationToken);
         var result = categories.Select(x => (CategoryResponse)x);
-        
+
         return new ApiResponse<IEnumerable<CategoryResponse>> { Data = result };
     }
 }

@@ -15,17 +15,17 @@ public class LoginQuery(UserManager<User> _userManager, SignInManager<User> _sig
         if (loginResult.Succeeded)
         {
             var user = await _userManager.FindByNameAsync(request.Username);
-            return ApiResponse<LoginResponse>.Happy(new() { UserId = user!.Id });
+            return new(new() { UserId = user!.Id });
         }
         else if (loginResult.RequiresTwoFactor)
         {
-            return ApiResponse<LoginResponse>.Fail(HttpStatusCode.Unauthorized, "2 Factor Authentication required", new() { Requires2FA = true });
+            return new(HttpStatusCode.Unauthorized, "2 Factor Authentication required", new() { Requires2FA = true });
         }
         else if (loginResult.IsLockedOut)
         {
-            return ApiResponse<LoginResponse>.Fail(HttpStatusCode.Unauthorized, "Account is locked", new() { IsLocked = true });
+            return new(HttpStatusCode.Unauthorized, "Account is locked", new() { IsLocked = true });
         }
 
-        return ApiResponse<LoginResponse>.Fail(HttpStatusCode.Unauthorized, "Invalid credentials");
+        return new(HttpStatusCode.Unauthorized, "Invalid credentials");
     }
 }

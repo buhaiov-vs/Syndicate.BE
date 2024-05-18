@@ -12,11 +12,11 @@ public class CategoryResponse
 
     public List<Category>? Children { get; set; }
 
-    
+
     public static implicit operator CategoryResponse(Category b)
     {
         return new()
-        { 
+        {
             Id = b.Id,
             Name = b.Name,
             Description = b.Description,

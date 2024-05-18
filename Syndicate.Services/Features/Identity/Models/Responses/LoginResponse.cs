@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace Syndicate.Services.Features.Identity.Models.Responses;
+﻿namespace Syndicate.Services.Features.Identity.Models.Responses;
 
 public class LoginResponse
 {

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Syndicate.Data;
 
@@ -11,9 +12,11 @@ using Syndicate.Data;
 namespace Syndicate.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240518072557_A1")]
+    partial class A1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -130,12 +133,12 @@ namespace Syndicate.Data.Migrations
                     b.Property<Guid>("ServicesId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("TagsName")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("TagsId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("ServicesId", "TagsName");
+                    b.HasKey("ServicesId", "TagsId");
 
-                    b.HasIndex("TagsName");
+                    b.HasIndex("TagsId");
 
                     b.ToTable("ServiceTag");
                 });
@@ -293,10 +296,15 @@ namespace Syndicate.Data.Migrations
 
             modelBuilder.Entity("Syndicate.Data.Models.Tag", b =>
                 {
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Tags");
                 });
@@ -454,7 +462,7 @@ namespace Syndicate.Data.Migrations
 
                     b.HasOne("Syndicate.Data.Models.Tag", null)
                         .WithMany()
-                        .HasForeignKey("TagsName")
+                        .HasForeignKey("TagsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

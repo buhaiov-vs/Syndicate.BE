@@ -1,6 +1,5 @@
 ﻿namespace Syndicate.API.Middlewares;
 
-using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Syndicate.Services;
 using Syndicate.Services.Exceptions;
@@ -30,15 +29,15 @@ public class ErrorHandlingMiddleware(RequestDelegate next)
         var message = "Something went wrong. Try a bit later.";
         //TODO: Logging
 
-        if(exception is CustomValidationException)
+        if (exception is CustomValidationException)
         {
             code = HttpStatusCode.BadRequest;
             message = exception.Message;
         }
 
-        return context.Response.WriteAsync(JsonSerializer.Serialize(ApiResponse<object>.Fail(
+        return context.Response.WriteAsync(JsonSerializer.Serialize(new ApiResponse<object>(
             code,
             message
-        ), options: new() {  PropertyNamingPolicy = JsonNamingPolicy.CamelCase }));
+        ), options: new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }));
     }
 }

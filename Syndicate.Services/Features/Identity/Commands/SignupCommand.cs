@@ -14,7 +14,7 @@ public class SignupCommand(UserManager<User> _userManager, SignInManager<User> _
         var newUser = new User()
         {
             Email = request.Email,
-            Name = request.Name,
+            Name = request.Name ?? request.Email.Split("@")[0],
             UserName = request.Username,
             Type = request.Type,
         };
@@ -26,20 +26,17 @@ public class SignupCommand(UserManager<User> _userManager, SignInManager<User> _
 
         if (result == null)
         {
-            return ApiResponse<SignupResponse>.Fail(HttpStatusCode.BadRequest, "User was not created, please try later");
+            return new(HttpStatusCode.BadRequest, "User was not created, please try later");
         }
         else if (result.Succeeded)
         {
             await _signInManager.SignInAsync(newUser, false);
 
-            return ApiResponse<SignupResponse>.Happy(new() { UserId = newUser.Id });
+            return new(new() { UserId = newUser.Id });
         }
 
-        if(result.Errors.Empty())
-        {
-            throw new InvalidOperationException("Something went wrong. Not able to signup.");
-        }
-
-        return ApiResponse<SignupResponse>.Fail(HttpStatusCode.BadRequest, result.Errors.First().Description);
+        return result.Errors.Empty()
+            ? throw new InvalidOperationException("Something went wrong. Not able to signup.")
+            : new(HttpStatusCode.BadRequest, result.Errors.First().Description);
     }
 }

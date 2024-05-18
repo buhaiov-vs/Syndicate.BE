@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Syndicate.Data;
+using Syndicate.Services.Exceptions;
 using Syndicate.Services.Extensions;
 using Syndicate.Services.Features.Services.Models.Responses;
 using System.Net;
@@ -10,22 +11,19 @@ namespace Syndicate.Services.Features.Services.Queries;
 
 public class GetServiceQuery(IDbContextFactory<AppDbContext> dbContextFactory, IHttpContextAccessor _httpContextAccessor, ILogger<GetServiceQuery> logger)
 {
-    private readonly HttpContext _httpContext = _httpContextAccessor!.HttpContext;
+    private readonly HttpContext _httpContext = _httpContextAccessor?.HttpContext ?? throw new MissedHttpContextException();
 
     public async Task<ApiResponse<ServiceResponse>> ExecuteAsync(Guid id, CancellationToken cancelationToken = default)
     {
         using var db = await dbContextFactory.CreateDbContextAsync(cancelationToken);
 
         var result = await db.Services
-            .Where(x => x.Id == id)
-            .Where(x => x.OwnerId == _httpContext.User.GetId())
+            .Where(x => x.Id == id && x.OwnerId == _httpContext.User.GetId())
+            .Include(x => x.Tags)
             .FirstOrDefaultAsync(cancelationToken);
 
-        if(result == null)
-        {
-            return ApiResponse<ServiceResponse>.Fail(HttpStatusCode.NotFound, "No such service was found");
-        }
-
-        return ApiResponse<ServiceResponse>.Happy((ServiceResponse)result);
+        return result == null
+            ? new(HttpStatusCode.NotFound, "No such service was found")
+            : new((ServiceResponse)result);
     }
 }

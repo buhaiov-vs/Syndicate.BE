@@ -24,25 +24,28 @@ public class ApiResponse<TData>
 
     public ApiError<TData>? Error { get; set; }
 
-    public static ApiResponse<TData> Happy()
+    public ApiResponse(HttpStatusCode errorCode, string message)
     {
-        return new ApiResponse<TData> { };
+        Error = new()
+        {
+            Message = message,
+            Code = ((int)errorCode).ToString()
+        };
     }
 
-    public static ApiResponse<TData> Happy(TData data)
+    public ApiResponse(HttpStatusCode errorCode, string message, TData data)
     {
-        return new ApiResponse<TData> { Data = data };
+        Data = data;
+        Error = new()
+        {
+            Message = message,
+            Code = ((int)errorCode).ToString()
+        };
     }
 
-    public static ApiResponse<TData> Fail(HttpStatusCode errorCode, string message, TData data)
-    {
-        return new ApiResponse<TData> { Error = new() { Message = message, Code = ((int)errorCode).ToString() }, Data = data };
-    }
+    public ApiResponse(TData data) => Data = data;
 
-    public static ApiResponse<TData> Fail(HttpStatusCode errorCode, string message = "Something went wrong")
-    {
-        return new ApiResponse<TData> { Error = new() { Message = message, Code = ((int)errorCode).ToString() } };
-    }
+    public ApiResponse() { }
 }
 
 public class ApiError<TData>

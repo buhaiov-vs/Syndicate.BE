@@ -2,7 +2,7 @@
 
 namespace Syndicate.Services.Features.Services.Models.Responses;
 
-public class CreateServiceResponse
+public class UpdateServiceResponse
 {
     public Guid Id { get; set; }
 

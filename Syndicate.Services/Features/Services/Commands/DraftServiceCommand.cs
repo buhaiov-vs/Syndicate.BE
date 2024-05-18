@@ -15,19 +15,19 @@ public class DraftServiceCommand(
     AppDbContext appDbContext,
     IHttpContextAccessor httpContextAccessor,
     IValidator<DraftServiceRequest> validator,
-    ILogger<DraftServiceCommand>logger)
+    ILogger<DraftServiceCommand> logger)
 {
     private readonly HttpContext _httpContext = httpContextAccessor.HttpContext!;
 
-    public async Task<ApiResponse<CreateServiceResponse>> ExecuteAsync(DraftServiceRequest request, CancellationToken cancelationToken = default)
+    public async Task<ApiResponse<UpdateServiceResponse>> ExecuteAsync(DraftServiceRequest request, CancellationToken cancelationToken = default)
     {
         validator.ValidateAndThrow(request);
 
         var userId = _httpContext.User.GetId();
 
-        if(appDbContext.Services.Any(x => x.OwnerId == userId && x.Name.ToLower() == request.Name.ToLowerInvariant()))
+        if (appDbContext.Services.Any(x => x.OwnerId == userId && x.Name.Equals(request.Name, StringComparison.InvariantCultureIgnoreCase)))
         {
-            return ApiResponse<CreateServiceResponse>.Fail(HttpStatusCode.BadRequest, "Service with the following name already exists");
+            return new(HttpStatusCode.BadRequest, "Service with the following name already exists");
         }
 
         var entity = new Service()
@@ -41,6 +41,6 @@ public class DraftServiceCommand(
         appDbContext.Services.Add(entity);
         await appDbContext.SaveChangesAsync(cancelationToken);
 
-        return ApiResponse<CreateServiceResponse>.Happy(new() { Id = entity.Id, Status = entity.Status });
+        return new(new() { Id = entity.Id, Status = entity.Status });
     }
 }

@@ -1,4 +1,3 @@
-using FluentValidation;
 using Microsoft.AspNetCore.Http.Json;
 using Syndicate.API;
 using Syndicate.API.Middlewares;

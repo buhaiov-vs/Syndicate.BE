@@ -11,9 +11,9 @@ public class Service : IDBConfigurableModel
 
     public List<Tag> Tags { get; set; } = [];
 
-    public string Description { get; set; } = String.Empty;
+    public string? Description { get; set; }
 
-    public required ServiceStatus Status { get; set; } 
+    public required ServiceStatus Status { get; set; }
 
     public DateTime CreatedOn { get; set; }
 
@@ -25,8 +25,13 @@ public class Service : IDBConfigurableModel
 
     public User? Owner { get; set; }
 
+    public int Duration { get; set; }
+
+    public decimal Price { get; set; }
+
     public static void BuildModel(ModelBuilder builder)
     {
+        builder.Entity<Service>().Property(s => s.Price).HasPrecision(6, 2);
     }
 }
 

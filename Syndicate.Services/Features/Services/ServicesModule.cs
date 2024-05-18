@@ -11,7 +11,7 @@ public static class ServicesModule
     {
         services.AddScoped<GetDraftServicesQuery>();
         services.AddScoped<GetServiceQuery>();
-        services.AddScoped<CreateServiceCommand>();
+        services.AddScoped<UpdateServiceCommand>();
         services.AddScoped<DraftServiceCommand>();
         services.AddScoped<DeleteServiceCommand>();
     }

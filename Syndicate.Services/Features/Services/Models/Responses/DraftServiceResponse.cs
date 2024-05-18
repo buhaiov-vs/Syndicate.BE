@@ -1,5 +1,4 @@
 ﻿using Syndicate.Data.Models;
-using System;
 
 namespace Syndicate.Services.Features.Services.Models.Responses;
 public class DraftServiceResponse

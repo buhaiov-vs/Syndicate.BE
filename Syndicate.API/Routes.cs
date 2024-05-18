@@ -1,6 +1,4 @@
-﻿using Syndicate.Data.Models;
-
-namespace Syndicate.API;
+﻿namespace Syndicate.API;
 
 public static class Routes
 {

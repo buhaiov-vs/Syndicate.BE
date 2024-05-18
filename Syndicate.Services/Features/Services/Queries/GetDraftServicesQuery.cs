@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Syndicate.Data;
 using Syndicate.Data.Models;
+using Syndicate.Services.Exceptions;
 using Syndicate.Services.Extensions;
 using Syndicate.Services.Features.Services.Models.Responses;
 
@@ -10,7 +11,7 @@ namespace Syndicate.Services.Features.Services.Queries;
 
 public class GetDraftServicesQuery(IDbContextFactory<AppDbContext> dbContextFactory, IHttpContextAccessor _httpContextAccessor, ILogger<GetDraftServicesQuery> logger)
 {
-    private readonly HttpContext _httpContext = _httpContextAccessor!.HttpContext;
+    private readonly HttpContext _httpContext = _httpContextAccessor?.HttpContext ?? throw new MissedHttpContextException();
 
     public async Task<ApiResponse<IEnumerable<DraftServiceResponse>>> ExecuteAsync(CancellationToken cancelationToken = default)
     {
@@ -24,6 +25,6 @@ public class GetDraftServicesQuery(IDbContextFactory<AppDbContext> dbContextFact
             .Select(x => new Service { Id = x.Id, Name = x.Name, Status = x.Status })
             .ToListAsync(cancelationToken);
 
-        return ApiResponse<IEnumerable<DraftServiceResponse>>.Happy(result.Select(x => (DraftServiceResponse)x));
+        return new(result.Select(x => (DraftServiceResponse)x));
     }
 }

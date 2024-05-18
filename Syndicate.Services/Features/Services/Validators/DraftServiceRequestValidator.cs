@@ -1,8 +1,9 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using Syndicate.Services.Exceptions;
+using Syndicate.Services.Features.Services.Models.Requests;
 
-namespace Syndicate.Services.Features.Services.Models.Requests.Validators;
+namespace Syndicate.Services.Features.Services.Validators;
 
 public class DraftServiceRequestValidator : AbstractValidator<DraftServiceRequest>
 {

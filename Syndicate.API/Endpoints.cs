@@ -28,8 +28,8 @@ public static class Endpoints
             .RequireAuthorization();
 
         app.MapPost(Routes.Services.Base,
-            ([FromServices] CreateServiceCommand command,
-            [FromBody] CreateServiceRequest request,
+            ([FromServices] UpdateServiceCommand command,
+            [FromBody] UpdateServiceRequest request,
             CancellationToken cancellationToken)
             => command.ExecuteAsync(request, cancellationToken))
             .RequireAuthorization();
@@ -71,7 +71,7 @@ public static class Endpoints
             [FromBody] LoginRequest request)
             => query.ExecuteAsync(request))
             .AllowAnonymous();
-        
+
         app.MapPost(Routes.Identity.Signup,
             ([FromServices] SignupCommand command,
             [FromBody] SignupRequest request)

@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Syndicate.Data;
-using Syndicate.Services.Features.Services.Models.Requests;
 using Syndicate.Services.Extensions;
-using Microsoft.EntityFrameworkCore;
+using Syndicate.Services.Features.Services.Models.Requests;
 
 namespace Syndicate.Services.Features.Services.Commands;
-public class DeleteServiceCommand(AppDbContext appDbContext, IHttpContextAccessor httpContextAccessor, ILogger<CreateServiceCommand> logger)
+public class DeleteServiceCommand(AppDbContext appDbContext, IHttpContextAccessor httpContextAccessor, ILogger<UpdateServiceCommand> logger)
 {
     private readonly HttpContext _httpContext = httpContextAccessor.HttpContext!;
 

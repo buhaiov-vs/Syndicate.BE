@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Syndicate.Data.Enums;
 
-namespace Syndicate.Data.Models;
+namespace Syndicate.Data.Models.Identity;
 
 public class User : IdentityUser<Guid>, IDBConfigurableModel
 {

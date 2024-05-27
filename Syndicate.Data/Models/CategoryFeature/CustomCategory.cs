@@ -1,4 +1,4 @@
-﻿namespace Syndicate.Data.Models;
+﻿namespace Syndicate.Data.Models.CategoryFeature;
 
 public class CustomCategory
 {

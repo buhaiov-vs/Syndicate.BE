@@ -1,4 +1,4 @@
-﻿using Syndicate.Data.Models;
+﻿using Syndicate.Data.Models.CategoryFeature;
 
 namespace Syndicate.Services.Features.Categories.Models;
 

@@ -1,13 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Syndicate.Data.Enums;
+using Syndicate.Data.Models.Identity;
+using Syndicate.Data.Models.TagFeature;
 
-namespace Syndicate.Data.Models;
+namespace Syndicate.Data.Models.ServiceFeature;
 
 public class Service : IDBConfigurableModel
 {
     public Guid Id { get; set; }
 
     public required string Name { get; set; }
+
+    public required string NormalizedName { get; set; }
 
     public List<Tag> Tags { get; set; } = [];
 
@@ -25,9 +29,9 @@ public class Service : IDBConfigurableModel
 
     public User? Owner { get; set; }
 
-    public int Duration { get; set; }
+    public int? Duration { get; set; }
 
-    public decimal Price { get; set; }
+    public decimal? Price { get; set; }
 
     public static void BuildModel(ModelBuilder builder)
     {

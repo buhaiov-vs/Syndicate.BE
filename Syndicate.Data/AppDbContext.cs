@@ -2,6 +2,10 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Syndicate.Data.Models;
+using Syndicate.Data.Models.CategoryFeature;
+using Syndicate.Data.Models.Identity;
+using Syndicate.Data.Models.ServiceFeature;
+using Syndicate.Data.Models.TagFeature;
 using System.Reflection;
 
 namespace Syndicate.Data;

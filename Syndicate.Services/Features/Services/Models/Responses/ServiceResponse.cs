@@ -1,5 +1,5 @@
 ﻿using Syndicate.Data.Enums;
-using Syndicate.Data.Models;
+using Syndicate.Data.Models.ServiceFeature;
 
 namespace Syndicate.Services.Features.Services.Models.Responses;
 
@@ -27,11 +27,11 @@ public class ServiceResponse
         {
             Id = b.Id,
             Name = b.Name,
+            Status = ServiceStatus.Draft,
             Description = b.Description,
-            Status = b.Status,
+            Tags = b.Tags.Select(t => t.Name).ToList(),
             Price = b.Price,
-            Duration = b.Duration,
-            Tags = b.Tags.Select(x => x.Name).ToList(),
+            Duration = b.Duration
         };
     }
 }

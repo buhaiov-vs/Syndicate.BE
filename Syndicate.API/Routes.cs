@@ -15,7 +15,7 @@ public static class Routes
     {
         public static string Base => "services";
 
-        public static string Single(string paramName) => Base + "/" + paramName;
+        public static string Exact(string paramName) => Base + "/" + paramName;
 
         public static string Draft => Base + "/draft";
     }

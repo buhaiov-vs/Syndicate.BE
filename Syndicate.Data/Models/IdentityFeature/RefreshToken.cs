@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Syndicate.Data.Models.Identity;
 
 namespace Syndicate.Data.Models;
 

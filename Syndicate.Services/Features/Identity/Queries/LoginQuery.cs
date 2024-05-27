@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Syndicate.Data.Models;
+using Syndicate.Data.Models.Identity;
 using Syndicate.Services.Features.Identity.Models.Requests;
 using Syndicate.Services.Features.Identity.Models.Responses;
 using System.Net;

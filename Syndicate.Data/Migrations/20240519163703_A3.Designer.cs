@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Syndicate.Data;
 
@@ -11,9 +12,11 @@ using Syndicate.Data;
 namespace Syndicate.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240519163703_A3")]
+    partial class A3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,7 +143,7 @@ namespace Syndicate.Data.Migrations
                     b.ToTable("ServiceTag");
                 });
 
-            modelBuilder.Entity("Syndicate.Data.Models.CategoryFeature.Category", b =>
+            modelBuilder.Entity("Syndicate.Data.Models.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -190,7 +193,141 @@ namespace Syndicate.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Syndicate.Data.Models.Identity.User", b =>
+            modelBuilder.Entity("Syndicate.Data.Models.DraftService", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("DraftServices");
+                });
+
+            modelBuilder.Entity("Syndicate.Data.Models.RefreshToken", b =>
+                {
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedByIp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Expires")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReplacedByToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Revoked")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RevokedByIp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("OwnerId", "Token");
+
+                    b.ToTable("RefreshToken", (string)null);
+                });
+
+            modelBuilder.Entity("Syndicate.Data.Models.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("Role", (string)null);
+                });
+
+            modelBuilder.Entity("Syndicate.Data.Models.Service", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(6, 2)
+                        .HasColumnType("decimal(6,2)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("Services");
+                });
+
+            modelBuilder.Entity("Syndicate.Data.Models.Tag", b =>
+                {
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Name");
+
+                    b.ToTable("Tags");
+                });
+
+            modelBuilder.Entity("Syndicate.Data.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -268,135 +405,16 @@ namespace Syndicate.Data.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("Syndicate.Data.Models.RefreshToken", b =>
-                {
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Token")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedByIp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Expires")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ReplacedByToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("Revoked")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("RevokedByIp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("OwnerId", "Token");
-
-                    b.ToTable("Category", (string)null);
-                });
-
-            modelBuilder.Entity("Syndicate.Data.Models.Role", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("Role", (string)null);
-                });
-
-            modelBuilder.Entity("Syndicate.Data.Models.ServiceFeature.Service", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Duration")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal?>("Price")
-                        .HasPrecision(6, 2)
-                        .HasColumnType("decimal(6,2)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OwnerId");
-
-                    b.ToTable("Services");
-                });
-
-            modelBuilder.Entity("Syndicate.Data.Models.TagFeature.Tag", b =>
-                {
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("NormalizedName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Name");
-
-                    b.ToTable("Tags");
-                });
-
             modelBuilder.Entity("Syndicate.Data.Models.Admin", b =>
                 {
-                    b.HasBaseType("Syndicate.Data.Models.Identity.User");
+                    b.HasBaseType("Syndicate.Data.Models.User");
 
                     b.HasDiscriminator().HasValue(1);
                 });
 
             modelBuilder.Entity("Syndicate.Data.Models.Customer", b =>
                 {
-                    b.HasBaseType("Syndicate.Data.Models.Identity.User");
+                    b.HasBaseType("Syndicate.Data.Models.User");
 
                     b.HasDiscriminator().HasValue(2);
                 });
@@ -412,7 +430,7 @@ namespace Syndicate.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Syndicate.Data.Models.Identity.User", null)
+                    b.HasOne("Syndicate.Data.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -421,7 +439,7 @@ namespace Syndicate.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("Syndicate.Data.Models.Identity.User", null)
+                    b.HasOne("Syndicate.Data.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -436,7 +454,7 @@ namespace Syndicate.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Syndicate.Data.Models.Identity.User", null)
+                    b.HasOne("Syndicate.Data.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -445,7 +463,7 @@ namespace Syndicate.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("Syndicate.Data.Models.Identity.User", null)
+                    b.HasOne("Syndicate.Data.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -454,29 +472,40 @@ namespace Syndicate.Data.Migrations
 
             modelBuilder.Entity("ServiceTag", b =>
                 {
-                    b.HasOne("Syndicate.Data.Models.ServiceFeature.Service", null)
+                    b.HasOne("Syndicate.Data.Models.Service", null)
                         .WithMany()
                         .HasForeignKey("ServicesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Syndicate.Data.Models.TagFeature.Tag", null)
+                    b.HasOne("Syndicate.Data.Models.Tag", null)
                         .WithMany()
                         .HasForeignKey("TagsName")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Syndicate.Data.Models.CategoryFeature.Category", b =>
+            modelBuilder.Entity("Syndicate.Data.Models.Category", b =>
                 {
-                    b.HasOne("Syndicate.Data.Models.CategoryFeature.Category", null)
+                    b.HasOne("Syndicate.Data.Models.Category", null)
                         .WithMany("Children")
                         .HasForeignKey("CategoryId");
                 });
 
+            modelBuilder.Entity("Syndicate.Data.Models.DraftService", b =>
+                {
+                    b.HasOne("Syndicate.Data.Models.User", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
+                });
+
             modelBuilder.Entity("Syndicate.Data.Models.RefreshToken", b =>
                 {
-                    b.HasOne("Syndicate.Data.Models.Identity.User", "Owner")
+                    b.HasOne("Syndicate.Data.Models.User", "Owner")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -485,9 +514,9 @@ namespace Syndicate.Data.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("Syndicate.Data.Models.ServiceFeature.Service", b =>
+            modelBuilder.Entity("Syndicate.Data.Models.Service", b =>
                 {
-                    b.HasOne("Syndicate.Data.Models.Identity.User", "Owner")
+                    b.HasOne("Syndicate.Data.Models.User", "Owner")
                         .WithMany()
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -496,12 +525,12 @@ namespace Syndicate.Data.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("Syndicate.Data.Models.CategoryFeature.Category", b =>
+            modelBuilder.Entity("Syndicate.Data.Models.Category", b =>
                 {
                     b.Navigation("Children");
                 });
 
-            modelBuilder.Entity("Syndicate.Data.Models.Identity.User", b =>
+            modelBuilder.Entity("Syndicate.Data.Models.User", b =>
                 {
                     b.Navigation("RefreshTokens");
                 });

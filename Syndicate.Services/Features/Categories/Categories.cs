@@ -1,12 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Syndicate.Services.Features.Categories.Queries;
 
 namespace Syndicate.Services.Features.Categories;
 
 public static class Categories
 {
-    public static void Register(IServiceCollection services, IConfiguration configuration)
+    public static void Register(IServiceCollection services)
     {
         services.AddScoped<GetCategoriesQuery>();
     }

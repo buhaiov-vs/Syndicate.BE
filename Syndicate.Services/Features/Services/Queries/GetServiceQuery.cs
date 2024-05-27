@@ -17,13 +17,13 @@ public class GetServiceQuery(IDbContextFactory<AppDbContext> dbContextFactory, I
     {
         using var db = await dbContextFactory.CreateDbContextAsync(cancelationToken);
 
-        var result = await db.Services
+        var service = await db.Services
             .Where(x => x.Id == id && x.OwnerId == _httpContext.User.GetId())
             .Include(x => x.Tags)
             .FirstOrDefaultAsync(cancelationToken);
 
-        return result == null
+        return service == null
             ? new(HttpStatusCode.NotFound, "No such service was found")
-            : new((ServiceResponse)result);
+            : new((ServiceResponse)service);
     }
 }

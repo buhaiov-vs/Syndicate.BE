@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Syndicate.Data;
 using Syndicate.Data.Models;
+using Syndicate.Data.Models.Identity;
 using Syndicate.Services.Features.Identity.Commands;
 using Syndicate.Services.Features.Identity.Queries;
 

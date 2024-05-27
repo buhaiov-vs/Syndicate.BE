@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Syndicate.Data.Models;
+namespace Syndicate.Data.Models.CategoryFeature;
 
 public class Category : IDBConfigurableModel
 {

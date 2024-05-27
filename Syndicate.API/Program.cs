@@ -35,7 +35,7 @@ builder.Services.Configure<JsonOptions>(options =>
 Options.Register(builder.Services, builder.Configuration);
 Database.Register(builder.Services, builder.Configuration);
 IdentityModule.Register(builder.Services, builder.Configuration);
-Services.Register(builder.Services, builder.Configuration);
+Services.Register(builder.Services);
 
 var app = builder.Build();
 
@@ -45,7 +45,7 @@ app.UseCors(o =>
 {
     o.AllowAnyHeader();
     o.AllowAnyMethod();
-    o.WithOrigins("https://localhost:3000");
+    o.WithOrigins("https://localhost:3000", "https://localhost:3001");
     o.AllowCredentials();
     o.SetPreflightMaxAge(TimeSpan.FromDays(1));
 });

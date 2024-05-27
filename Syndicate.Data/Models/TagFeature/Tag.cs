@@ -1,10 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Syndicate.Data.Models.ServiceFeature;
 
-namespace Syndicate.Data.Models;
+namespace Syndicate.Data.Models.TagFeature;
 
 public class Tag : IDBConfigurableModel
 {
     public required string Name { get; set; }
+    
+    public required string NormalizedName { get; set; }
 
     public List<Service> Services { get; set; } = [];
 

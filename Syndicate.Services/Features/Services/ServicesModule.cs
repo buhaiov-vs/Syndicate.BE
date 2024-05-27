@@ -7,9 +7,9 @@ namespace Syndicate.Services.Features.Services;
 
 public static class ServicesModule
 {
-    public static void Register(IServiceCollection services, IConfiguration configuration)
+    public static void Register(IServiceCollection services)
     {
-        services.AddScoped<GetDraftServicesQuery>();
+        services.AddScoped<GetServicesForListQuery>();
         services.AddScoped<GetServiceQuery>();
         services.AddScoped<UpdateServiceCommand>();
         services.AddScoped<DraftServiceCommand>();

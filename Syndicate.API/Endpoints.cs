@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Syndicate.Data.Enums;
 using Syndicate.Services.Features.Categories.Queries;
 using Syndicate.Services.Features.Identity.Commands;
 using Syndicate.Services.Features.Identity.Models.Requests;
@@ -20,12 +21,12 @@ public static class Endpoints
 
     private static void RegisterServicesEndpoints(WebApplication app)
     {
-        app.MapGet(Routes.Services.Single("{id}"),
+        app.MapGet(Routes.Services.Exact("{id}"),
             ([FromServices] GetServiceQuery query,
             [FromRoute] Guid id,
             CancellationToken cancellationToken)
             => query.ExecuteAsync(id, cancellationToken))
-            .RequireAuthorization();
+            .AllowAnonymous();
 
         app.MapPost(Routes.Services.Base,
             ([FromServices] UpdateServiceCommand command,
@@ -41,8 +42,8 @@ public static class Endpoints
             => command.ExecuteAsync(request, cancellationToken))
             .RequireAuthorization();
 
-        app.MapGet(Routes.Services.Draft,
-            ([FromServices] GetDraftServicesQuery query,
+        app.MapGet(Routes.Services.Base,
+            ([FromServices] GetServicesForListQuery query,
             CancellationToken cancellationToken)
             => query.ExecuteAsync(cancellationToken))
             .RequireAuthorization();

@@ -1,4 +1,4 @@
-﻿namespace Syndicate.API.Middlewares;
+﻿namespace Syndicate.API.Middleware;
 
 using Microsoft.AspNetCore.Http;
 using Syndicate.Services;

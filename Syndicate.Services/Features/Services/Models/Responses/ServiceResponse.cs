@@ -27,7 +27,7 @@ public class ServiceResponse
         {
             Id = b.Id,
             Name = b.Name,
-            Status = ServiceStatus.Draft,
+            Status = b.Status,
             Description = b.Description,
             Tags = b.Tags.Select(t => t.Name).ToList(),
             Price = b.Price,

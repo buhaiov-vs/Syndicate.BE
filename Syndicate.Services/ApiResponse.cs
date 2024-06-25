@@ -4,7 +4,7 @@ namespace Syndicate.Services;
 
 public class ApiResponse
 {
-    public ApiError? Error { get; set; }
+    public List<ApiError>? Errors { get; set; }
 
     public static ApiResponse Happy()
     {
@@ -13,7 +13,7 @@ public class ApiResponse
 
     public static ApiResponse Fail(HttpStatusCode errorCode, string message = "Something went wrong")
     {
-        return new ApiResponse { Error = new() { Message = message, Code = ((int)errorCode).ToString() } };
+        return new ApiResponse { Errors = [new() { Message = message, Code = ((int)errorCode).ToString() }] };
     }
 }
 
@@ -22,25 +22,25 @@ public class ApiResponse<TData>
 {
     public TData? Data { get; set; }
 
-    public ApiError<TData>? Error { get; set; }
+    public List<ApiError<TData>>? Errors { get; set; }
 
     public ApiResponse(HttpStatusCode errorCode, string message)
     {
-        Error = new()
+        Errors = [new()
         {
             Message = message,
             Code = ((int)errorCode).ToString()
-        };
+        }];
     }
 
     public ApiResponse(HttpStatusCode errorCode, string message, TData data)
     {
         Data = data;
-        Error = new()
+        Errors = [new()
         {
             Message = message,
             Code = ((int)errorCode).ToString()
-        };
+        }];
     }
 
     public ApiResponse(TData data) => Data = data;

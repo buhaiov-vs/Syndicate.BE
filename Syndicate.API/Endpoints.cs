@@ -21,7 +21,7 @@ public static class Endpoints
 
     private static void RegisterServicesEndpoints(WebApplication app)
     {
-        app.MapGet(Routes.Services.Exact("{id}"),
+        app.MapGet(Routes.Services.Exact("id"),
             ([FromServices] GetServiceQuery query,
             [FromRoute] Guid id,
             CancellationToken cancellationToken)
@@ -53,6 +53,20 @@ public static class Endpoints
             [FromBody] DraftServiceRequest request,
             CancellationToken cancellationToken)
             => command.ExecuteAsync(request, cancellationToken))
+            .RequireAuthorization();
+
+        app.MapPost(Routes.Services.Publish("id"),
+            ([FromServices] PublishServiceCommand command,
+            [FromRoute] Guid id,
+            CancellationToken cancellationToken)
+            => command.ExecuteAsync(id, cancellationToken))
+            .RequireAuthorization();
+
+        app.MapPost(Routes.Services.Deactivate("id"),
+            ([FromServices] DeactivateServiceCommand command,
+            [FromRoute] Guid id,
+            CancellationToken cancellationToken)
+            => command.ExecuteAsync(id, cancellationToken))
             .RequireAuthorization();
     }
 

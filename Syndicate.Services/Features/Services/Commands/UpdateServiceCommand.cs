@@ -1,5 +1,4 @@
-﻿using Azure;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -10,9 +9,7 @@ using Syndicate.Services.Exceptions;
 using Syndicate.Services.Extensions;
 using Syndicate.Services.Features.Services.Models.Requests;
 using Syndicate.Services.Features.Services.Models.Responses;
-using System.Collections.Frozen;
 using System.Net;
-using System.Threading;
 
 namespace Syndicate.Services.Features.Services.Commands;
 
@@ -40,7 +37,7 @@ public class UpdateServiceCommand(AppDbContext _appDbContext, IHttpContextAccess
         serviceToUpdate.UpdatedBy = userId;
         serviceToUpdate.Duration = request.Duration;
         serviceToUpdate.Price = request.Price;
-        await UpdateTags(serviceToUpdate, request.Tags);
+        await UpdateTags(serviceToUpdate, request.Tags, cancellationToken);
 
         await _appDbContext.SaveChangesAsync(cancellationToken);
         await transaction.CommitAsync(cancellationToken);
@@ -67,7 +64,7 @@ public class UpdateServiceCommand(AppDbContext _appDbContext, IHttpContextAccess
                     _appDbContext.Tags.Add(tag);
                 }
 
-                serviceToUpdate.Tags.Add(tag);
+                serviceToUpdate.Tags.Add(tag!);
             }
         }
     }

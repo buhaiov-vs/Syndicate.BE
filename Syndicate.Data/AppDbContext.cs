@@ -16,6 +16,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 
     public DbSet<Service> Services { get; set; }
 
+    public DbSet<ServiceFolder> ServicesFolders { get; set; }
+
     public DbSet<Tag> Tags { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -40,9 +42,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
         var types = Assembly.GetExecutingAssembly().GetTypes();
         var implementations = types.Where(t => typeof(IDBConfigurableModel).IsAssignableFrom(t) && t.IsClass);
 
-        foreach (var impl in implementations)
+        foreach (var implementation in implementations)
         {
-            var methodInfo = impl.GetMethod(nameof(IDBConfigurableModel.BuildModel), BindingFlags.Static | BindingFlags.Public);
+            var methodInfo = implementation.GetMethod(nameof(IDBConfigurableModel.BuildModel), BindingFlags.Static | BindingFlags.Public);
 
             methodInfo?.Invoke(null, [builder]);
         }

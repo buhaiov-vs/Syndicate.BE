@@ -19,7 +19,7 @@ public class DraftServiceCommand(
 {
     private readonly HttpContext _httpContext = httpContextAccessor.HttpContext!;
 
-    public async Task<ApiResponse<UpdateServiceResponse>> ExecuteAsync(DraftServiceRequest request, CancellationToken cancelationToken = default)
+    public async Task<ApiResponse<UpdateServiceResponse>> ExecuteAsync(DraftServiceRequest request, CancellationToken cancellationToken = default)
     {
         validator.ValidateAndThrow(request);
 
@@ -40,7 +40,7 @@ public class DraftServiceCommand(
         };
 
         appDbContext.Services.Add(entity);
-        await appDbContext.SaveChangesAsync(cancelationToken);
+        await appDbContext.SaveChangesAsync(cancellationToken);
 
         return new(new() { Id = entity.Id, Status = ServiceStatus.Draft });
     }

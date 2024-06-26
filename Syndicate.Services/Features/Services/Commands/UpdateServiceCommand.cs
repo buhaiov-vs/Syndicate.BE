@@ -18,13 +18,17 @@ public class UpdateServiceCommand(AppDbContext _appDbContext, IHttpContextAccess
 {
     private readonly HttpContext _httpContext = _httpContextAccessor?.HttpContext ?? throw new MissedHttpContextException();
 
-    public async Task<ApiResponse<UpdateServiceResponse>> ExecuteAsync(UpdateServiceRequest request, CancellationToken cancellationToken = default)
+    public async Task<ApiResponse<UpdateServiceResponse>> ExecuteAsync(Guid requestId, UpdateServiceRequest request, CancellationToken cancellationToken = default)
     {
         _validator.ValidateAndThrow(request);
         var userId = _httpContext.User.GetId();
 
         var transaction = await _appDbContext.Database.BeginTransactionAsync(cancellationToken);
-        var serviceToUpdate = await _appDbContext.Services.Where(s => s.OwnerId == userId && s.Id == request.Id).Include(x => x.Tags).AsTracking().FirstOrDefaultAsync(cancellationToken);
+        var serviceToUpdate = await _appDbContext.Services
+            .Where(s => s.OwnerId == userId && s.Id == requestId)
+            .Include(x => x.Tags)
+            .AsTracking()
+            .FirstOrDefaultAsync(cancellationToken);
 
         if (serviceToUpdate is null)
         {

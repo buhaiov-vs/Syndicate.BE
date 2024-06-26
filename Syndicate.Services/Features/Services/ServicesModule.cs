@@ -19,11 +19,13 @@ public static class ServicesModule
         services.AddScoped<DeleteServiceCommand>();
         services.AddScoped<PublishServiceCommand>();
         services.AddScoped<DeactivateServiceCommand>();
+        services.AddScoped<CreateServicesFolderCommand>();
     }
 
     private static void RegisterQueries(IServiceCollection services)
     {
         services.AddScoped<GetServicesForListQuery>();
         services.AddScoped<GetServiceQuery>();
+        services.AddScoped<GetServicesFolderQuery>();
     }
 }

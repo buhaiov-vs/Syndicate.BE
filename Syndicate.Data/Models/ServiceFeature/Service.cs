@@ -33,9 +33,14 @@ public class Service : IDBConfigurableModel
 
     public decimal? Price { get; set; }
 
+    public string? FolderName { get; set; }
+
+    public ServiceFolder? Folder { get; set; }
+
     public static void BuildModel(ModelBuilder builder)
     {
         builder.Entity<Service>().Property(s => s.Price).HasPrecision(6, 2);
+        builder.Entity<Service>().HasOne(x => x.Folder).WithMany(x => x.Services).HasForeignKey(x => x.FolderName);
     }
 }
 

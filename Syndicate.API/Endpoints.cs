@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Syndicate.Data.Enums;
 using Syndicate.Services.Features.Categories.Queries;
 using Syndicate.Services.Features.Identity.Commands;
 using Syndicate.Services.Features.Identity.Models.Requests;
@@ -28,11 +27,12 @@ public static class Endpoints
             => query.ExecuteAsync(id, cancellationToken))
             .AllowAnonymous();
 
-        app.MapPost(Routes.Services.Base,
+        app.MapPost(Routes.Services.Exact("id"),
             ([FromServices] UpdateServiceCommand command,
+            [FromRoute] Guid id,
             [FromBody] UpdateServiceRequest request,
             CancellationToken cancellationToken)
-            => command.ExecuteAsync(request, cancellationToken))
+            => command.ExecuteAsync(id, request, cancellationToken))
             .RequireAuthorization();
 
         app.MapDelete(Routes.Services.Base,
@@ -68,6 +68,20 @@ public static class Endpoints
             CancellationToken cancellationToken)
             => command.ExecuteAsync(id, cancellationToken))
             .RequireAuthorization();
+
+        app.MapGet(Routes.Services.Folders.Exact("name"),
+            ([FromServices] GetServicesFolderQuery command,
+            [FromRoute] string name,
+            CancellationToken cancellationToken)
+            => command.ExecuteAsync(name, cancellationToken))
+            .RequireAuthorization();
+
+        app.MapPost(Routes.Services.Folders.Base,
+            ([FromServices] CreateServicesFolderCommand command,
+            [FromBody] CreateServicesFolderRequest request,
+            CancellationToken cancellationToken)
+            => command.ExecuteAsync(request, cancellationToken))
+            .RequireAuthorization();
     }
 
     private static void RegisterCategoriesEndpoints(WebApplication app)
@@ -81,7 +95,7 @@ public static class Endpoints
 
     private static void RegisterIdentityEndpoints(WebApplication app)
     {
-        app.MapPost(Routes.Identity.Signin,
+        app.MapPost(Routes.Identity.SignIn,
             ([FromServices] LoginQuery query,
             [FromBody] LoginRequest request)
             => query.ExecuteAsync(request))

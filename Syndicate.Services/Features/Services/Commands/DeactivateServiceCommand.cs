@@ -15,13 +15,13 @@ public class DeactivateServiceCommand(
 {
     private readonly HttpContext _httpContext = httpContextAccessor.HttpContext!;
 
-    public async Task<ApiResponse> ExecuteAsync(Guid serviceId, CancellationToken cancelationToken = default)
+    public async Task<ApiResponse> ExecuteAsync(Guid serviceId, CancellationToken cancellationToken = default)
     {
         var userId = _httpContext.User.GetId();
 
         var service = await appDbContext.Services
             .AsTracking()
-            .FirstOrDefaultAsync(x => x.OwnerId == userId && x.Id == serviceId, cancelationToken);
+            .FirstOrDefaultAsync(x => x.OwnerId == userId && x.Id == serviceId, cancellationToken);
 
         if (service == null)
         {
@@ -30,7 +30,7 @@ public class DeactivateServiceCommand(
         }
 
         service.Status = ServiceStatus.Inactive;
-        await appDbContext.SaveChangesAsync(cancelationToken);
+        await appDbContext.SaveChangesAsync(cancellationToken);
 
         return new();
     }

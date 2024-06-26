@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http.Json;
 using Syndicate.API;
-using Syndicate.API.Middlewares;
+using Syndicate.API.Middleware;
 using Syndicate.Data;
 using Syndicate.Services;
 using Syndicate.Services.Features.Identity;

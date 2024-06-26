@@ -12,7 +12,8 @@ public class UpdateServiceRequestValidator : AbstractValidator<UpdateServiceRequ
             .Length(3, 100);
 
         RuleFor(x => x.Description)
-            .MaximumLength(500);
+            .MaximumLength(500)
+            .Must(x => x.Count(x => x == '\n' || x == '\r') <= 5);
 
         RuleFor(x => x.Duration)  // 5m to 11h 55m
             .LessThan(715)
@@ -23,6 +24,7 @@ public class UpdateServiceRequestValidator : AbstractValidator<UpdateServiceRequ
             .LessThan(100_000);
 
         RuleFor(x => x.Tags)
+            .NotEmpty()
             .Must(x => x.Count <= 10);
     }
 }

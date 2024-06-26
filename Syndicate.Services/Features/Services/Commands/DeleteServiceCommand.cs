@@ -10,21 +10,21 @@ public class DeleteServiceCommand(AppDbContext appDbContext, IHttpContextAccesso
 {
     private readonly HttpContext _httpContext = httpContextAccessor.HttpContext!;
 
-    public async Task<ApiResponse> ExecuteAsync(DeleteServiceRequest request, CancellationToken cancelationToken = default)
+    public async Task<ApiResponse> ExecuteAsync(DeleteServiceRequest request, CancellationToken cancellationToken = default)
     {
         var userId = _httpContext.User.GetId();
 
         var service = await appDbContext.Services
             .Include(x => x.Tags)
             .Where(x => x.OwnerId == userId && x.Id == request.Id)
-            .FirstOrDefaultAsync(cancelationToken);
+            .FirstOrDefaultAsync(cancellationToken);
 
         if (service != null)
         {
             appDbContext.Services.Remove(service);
             appDbContext.RemoveRange(service.Tags);
 
-            await appDbContext.SaveChangesAsync(cancelationToken);
+            await appDbContext.SaveChangesAsync(cancellationToken);
         }
 
         return ApiResponse.Happy();
